@@ -1,0 +1,13 @@
+#/bin/sh
+
+if [ -z "$1" ]; then
+	echo "Usage: $0 <pinyin_file>"
+	exit 1
+else
+	perl -CSD -MUnicode::Normalize -pe '
+	$_ = NFKD($_);          # 将 ü、ǜ 等分解为 u + 分音符(U+0308) + 声调符号
+	s/u\x{0308}\pM*/v/g;    # u + 分音符 → v（同时吃掉后面可能跟的声调）
+	s/U\x{0308}\pM*/V/g;    # 大写同理
+	s/\pM//g;               # 删除所有剩下的组合符号（如普通 u 的声调）
+	' ${1}
+fi
