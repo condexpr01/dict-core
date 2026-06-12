@@ -196,6 +196,9 @@ prefix() {
 > 为使仓库轻量化已分离dict-core    
 > [condexpr01/dict-core](https://github.com/condexpr01/dict-core.git)
 
+> 使用燃舞音形反查的燃舞五笔(反查也能顶，改善听打想打)    
+> [condexpr01/rime-ranwu](https://github.com/condexpr01/rime-ranwu.git)
+
 # <font color=#39c5bb> :sparkles: 字集 </font>
 > 五笔字集:     8105规范字词 + 5w以上生僻字    
 > 搜狗五笔挂接: 8105规范字词    
