@@ -7,7 +7,7 @@ cd src && make
 
 # 说明
 
-> 为使
+> 为使    
 > [condexpr01/rime-wubi86ex](https://github.com/condexpr01/rime-wubi86ex.git)    
 > [condexpr01/rime-ranwu](https://github.com/condexpr01/rime-ranwu.git)    
 > 轻量化，迁移出维护相关代码, 额外数据等    

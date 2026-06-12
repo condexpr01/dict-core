@@ -10,6 +10,8 @@ if [ -z "$1" ] && ! [ -f "$file" ]; then
 else
 
 perl -CA -pe '
+s/[0-9]//g;
+s/u:/v/g;
 s/(iong|iang|uang|ing|uai|ong|eng|ang|van|uan|iao|ian|iu|ia|ua|ve|ue|zh|sh|ch|uo|vn|un|en|an|ao|ai|ei|ie|ui|ou|in)/(
     $1 eq "iong"?"s":
     $1 eq "iang"?"d":

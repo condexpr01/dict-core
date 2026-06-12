@@ -108,10 +108,21 @@ t2() {
 q3dash1len3() { echo -n "$(grep -P "^...,1=[^,][^,][^,]" ${dict} |perl -CA -pe 's/,[0-9]*$//')"; }
 q3dash2len3() { echo -n "$(grep -P "^...,2=[^,][^,][^,]" ${dict} |perl -CA -pe 's/,[0-9]*$//')"; }
 
+q3dash1() { echo -n "$(grep -P "^...,1=" ${dict} |perl -CA -pe 's/,[0-9]*$//')"; }
+
 t3() {
 
 	printf '\n## <font color=#39c5bb> :sparkles: 3码 </font>\n'
 	printf '> <font color=#ffa500>3码内容过多不宜展示。</font>\n\n'
+
+	printf '<font color=#ffa500>\n\n'
+
+	printf '| 3码1号位总数 |与理论最高值比(%d/%d)|\n' $(q3dash1|wc -l) $((25*25*25))
+	printf "|:-:|:-:|\n"
+	printf "|%s|%.2f %%|\n" "$(q3dash1 | wc -l )" \
+							"$(awk "BEGIN{printf \"%.2f\",$(q3dash1|wc -l)*100/$((25*25*25)) }" )"
+
+	printf '\n</font>\n\n'
 
 
 	printf '<font color=#ffa500>\n\n'
@@ -137,9 +148,20 @@ t3() {
 q4dash1len4() { echo -n "$(grep -P "^....,1=[^,][^,][^,][^,]" ${dict}|perl -CA -pe 's/,[0-9]*$//' )"; }
 q4dash2len4() { echo -n "$(grep -P "^....,2=[^,][^,][^,][^,]" ${dict}|perl -CA -pe 's/,[0-9]*$//' )"; }
 
+q4dash1() { echo -n "$(grep -P "^....,1=" ${dict}|perl -CA -pe 's/,[0-9]*$//' )"; }
+
 t4() {
 	printf '\n## <font color=#39c5bb> :sparkles: 4码 </font>\n'
 	printf '> <font color=#ffa500>4码为全码，内容过多不宜展示。</font>\n\n'
+
+	printf '<font color=#ffa500>\n\n'
+
+	printf '| 4码1号位总数 |与理论最高值比(%d/%d)|\n' $(q4dash1|wc -l) $((25*25*25*25))
+	printf "|:-:|:-:|\n"
+	printf "|%s|%.2f %%|\n" "$(q4dash1 | wc -l )" \
+							"$(awk "BEGIN{printf \"%.2f\",$(q4dash1|wc -l)*100/$((25*25*25*25)) }" )"
+
+	printf '\n</font>\n\n'
 
 	printf '<font color=#ffa500>\n\n'
 
@@ -166,11 +188,12 @@ prefix() {
 
 # <font color=#39c5bb> :sparkles: 跳转 </font>
 
+> 永远会支持搜狗五笔的导入    
 > [搜狗五笔导入自定义码表/方案](./sougou)    
 
 > [码表制作日志参考](./op-log.md)    
 
-> 为使仓库轻量化已分离dict-core
+> 为使仓库轻量化已分离dict-core    
 > [condexpr01/dict-core](https://github.com/condexpr01/dict-core.git)
 
 # <font color=#39c5bb> :sparkles: 字集 </font>
