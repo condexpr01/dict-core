@@ -213,6 +213,7 @@ prefix() {
 
 * 燃舞五笔(帕瓦芙.powerful86wubi)    
 > 利用音形作为反查提升五笔的写作，听打，想打能力    
+> 以及五笔不好打的给音形打(可以大大降低候选)    
 > 音形反查是可以顶字上屏的:    
 
 <img src=\"./pictures/ranwu.gif\" width=400 alt=\"ranwu\" title=\"ranwu\">
