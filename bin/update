@@ -28,6 +28,9 @@ elif [[ "$cmd" == "repo" ]];then
 	"$SCRIPT_DIR"/fmt-to-sougou update-wbfmt > wb-sougou.txt
 	"$SCRIPT_DIR"/fmt-to-sougou update-rwfmt > rw-sougou.txt
 
+	"$SCRIPT_DIR"/gen-readme-ranwu update-rwfmt > rw-readme.md
+	"$SCRIPT_DIR"/gen-readme-wubi update-wbfmt > wb-readme.md
+
 fi
 
 

@@ -200,8 +200,6 @@ prefix() {
 > 永远会支持搜狗五笔的导入    
 > [搜狗五笔导入自定义码表/方案](./sougou)    
 
-> [码表制作日志参考](./op-log.md)    
-
 > 为使仓库轻量化已分离dict-core    
 > [condexpr01/dict-core](https://github.com/condexpr01/dict-core.git)
 
