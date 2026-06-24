@@ -1,0 +1,33 @@
+#!/bin/sh
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+cmd="$1"
+
+ranwu="$2"
+p86wb="$3"
+
+if [ ! -f "$ranwu" ] && [ ! -f "$p86wb" ];then
+	echo "Usage: $0 <command> <ranwu-rime> <p86wb-rime>"
+	exit 1
+fi
+
+if [[ "$cmd" == "diff" ]];then
+	echo "#p86wb缺词: "
+	"$SCRIPT_DIR"/word-set-difference <("$SCRIPT_DIR"/rime-to-fmt "$ranwu") <("$SCRIPT_DIR"/rime-to-fmt "$p86wb")
+
+	echo "#ranwu缺词: "
+	"$SCRIPT_DIR"/word-set-difference <("$SCRIPT_DIR"/rime-to-fmt "$p86wb") <("$SCRIPT_DIR"/rime-to-fmt "$ranwu")
+
+elif [[ "$cmd" == "repo" ]];then
+	"$SCRIPT_DIR"/rime-to-full-fmt "$p86wb" > update-wbfmt 2>>freq-missing
+	"$SCRIPT_DIR"/rime-to-full-fmt "$ranwu" > update-rwfmt 2>>freq-missing
+
+	"$SCRIPT_DIR"/fmt-to-rime update-wbfmt > wb-scheme.txt
+	"$SCRIPT_DIR"/fmt-to-rime update-rwfmt > rw-scheme.txt
+	"$SCRIPT_DIR"/fmt-to-sougou update-wbfmt > wb-sougou.txt
+	"$SCRIPT_DIR"/fmt-to-sougou update-rwfmt > rw-sougou.txt
+
+fi
+
+
