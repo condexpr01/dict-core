@@ -1,4 +1,4 @@
-#include "../cppcore/core.impl.cpp"
+#include "core.header.hpp"
 
 //查找输出easyword-4
 

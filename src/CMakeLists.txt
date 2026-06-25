@@ -14,11 +14,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(core SHARED)
 target_sources(core
-	PRIVATE
-		cppcore/core.impl.cpp
-
-	PUBLIC
-		cppcore/core.header.h
+	PRIVATE cppcore/core.impl.cpp
+	PUBLIC  cppcore/core.header.hpp
 )
 
 # CMAKE_INSTALL_PREFIX/bin
@@ -27,13 +24,18 @@ install(TARGETS core LIBRARY DESTINATION lib)
 function(add_bin_tool name src)
 	add_executable(${name})
 	target_sources(${name} PRIVATE ${src})
+
+	target_include_directories(${name} PUBLIC cppcore)
 	target_link_libraries(${name} PRIVATE core)
+
 	set_target_properties(${name}
-		PROPERTIES INSTALL_RPATH "$ORIGIN:$ORIGIN/../lib")
+			PROPERTIES 
+			INSTALL_RPATH "$ORIGIN:$ORIGIN/../lib")
+
 	install(TARGETS ${name} RUNTIME DESTINATION bin)
 endfunction()
 
-#add_bin_tool(cppt binsrc/cppt.cpp)
+add_bin_tool(cppt binsrc/cppt.cpp)
 
 add_bin_tool(encoder binsrc/encoder.cpp)
 add_bin_tool(encoder-with-filter binsrc/encoder-with-filter.cpp)

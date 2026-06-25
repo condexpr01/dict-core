@@ -64,6 +64,7 @@ clean:
 	-rm ../bin/cppt
 
 	-rm ../src/binsrc/compile_commands.json
+	-rm -rf ../src/.cache
 	-rm -rf ../src/binsrc/.cache
 
 	-rm ../src/cppcore/compile_commands.json

@@ -1,4 +1,4 @@
-#include "../cppcore/core.impl.cpp"
+#include "core.header.hpp"
 
 using namespace table;
 

@@ -1,6 +1,6 @@
 
 //确保只有一个音，并且这个音的频率最大
-#include "../cppcore/core.impl.cpp"
+#include "core.header.hpp"
 using namespace table;
 
 struct unique_voice_table{

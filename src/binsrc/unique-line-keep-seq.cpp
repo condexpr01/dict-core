@@ -7,7 +7,6 @@
 #include <vector>
 #include <fstream>
 
-
 using std::cout,std::cerr,std::endl;
 
 using std::string;

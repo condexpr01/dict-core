@@ -1,225 +1,47 @@
-#include "core.header.h"
+#include "core.header.hpp"
 #include <algorithm>
 
 namespace table{
 
-	class table_t{
-	public:
-		//预期格式：编码,序号=字词,频数
-		using table_type = unordered_multimap<string,vector<string>>;
+	//用单字表编码当前表
+	ep<void> table_t::encoder(const table_t &single_word_table){
+		return table::encoder(single_word_table,(*this));};
 
-		//表对象的哈希表
-		table_type table;
+	//从from表获取频数到当前表
+	ep<void> table_t::get_freq(table_t &from){return table::get_freq(from,(*this));};
 
-		//表对象的flag
-		table_category category = table_category::key_none;
+	//当前表变成与with表的交集
+	ep<void> table_t::word_set_intersect(const table_t &with){
+		return table::word_set_intersect((*this),with);};
 
-		//构造表对象时的错误信息
-		error_type error = nullptr;
-		bool is_ok = false;
+	//当前表变成与with表的并集
+	ep<void> table_t::word_set_unite(const table_t &with){
+		return table::word_set_unite((*this),with);};
 
-		using iterator = table_type::iterator;
-		using const_iterator = table_type::const_iterator;
-		
-		//用单字表编码当前表
-		inline ep<void> encoder(const table_t &single_word_table){
-			return table::encoder(single_word_table,(*this));};
+	//当前表变成与with表的差集
+	ep<void> table_t::word_set_difference(const table_t &with){
+		return table::word_set_difference((*this),with);};
 
-		//从from表获取频数到当前表
-		inline ep<void> get_freq(table_t &from){return table::get_freq(from,(*this));};
-		
-		//当前表变成与with表的交集
-		inline ep<void> word_set_intersect(const table_t &with){
-			return table::word_set_intersect((*this),with);};
+	//当前表变成与with表的交集
+	ep<void> table_t::word_codec_set_intersect(const table_t &with){
+		return table::word_codec_set_intersect((*this),with);};
 
-		//当前表变成与with表的并集
-		inline ep<void> word_set_unite(const table_t &with){
-			return table::word_set_unite((*this),with);};
+	//当前表变成与with表的并集
+	ep<void> table_t::word_codec_set_unite(const table_t &with){
+		return table::word_codec_set_unite((*this),with);};
 
-		//当前表变成与with表的差集
-		inline ep<void> word_set_difference(const table_t &with){
-			return table::word_set_difference((*this),with);};
+	//当前表变成与with表的差集
+	ep<void> table_t::word_codec_set_difference(const table_t &with){
+		return table::word_codec_set_difference((*this),with);};
 
-		//当前表变成与with表的交集
-		inline ep<void> word_codec_set_intersect(const table_t &with){
-			return table::word_codec_set_intersect((*this),with);};
+	ep<void> table_t::codec_set_intersect(const table_t &with){
+		return table::codec_set_intersect((*this),with);};
 
-		//当前表变成与with表的并集
-		inline ep<void> word_codec_set_unite(const table_t &with){
-			return table::word_codec_set_unite((*this),with);};
+	ep<void> table_t::codec_set_unite(const table_t &with){
+		return table::codec_set_unite((*this),with);};
 
-		//当前表变成与with表的差集
-		inline ep<void> word_codec_set_difference(const table_t &with){
-			return table::word_codec_set_difference((*this),with);};
-
-		inline ep<void> codec_set_intersect(const table_t &with){
-			return table::codec_set_intersect((*this),with);};
-
-		inline ep<void> codec_set_unite(const table_t &with){
-			return table::codec_set_unite((*this),with);};
-
-		inline ep<void> codec_set_difference(const table_t &with){
-			return table::codec_set_difference((*this),with);};
-
-
-		//默认输出不过滤器(返回true:输出这项，返回false不输出这项)
-		static bool default_filter(const pair<string,vector<string>> &p){return true;}
-
-		//在编码后，要求不输出编码失败的项
-		static bool encoder_filter(const pair<string,vector<string>> &p){
-			if (p.second[0].empty())return false;
-			return true;}
-
-		//在获频后，要求不输出无频的项
-		static bool get_freq_filter(const pair<string,vector<string>> &p){
-			if (p.second[2].empty())return false;
-			return true;}
-
-
-		//输出表对象到输出流
-		template <typename T = bool(*)(const pair<string,vector<string>>&)>
-		requires requires(T f,pair<string,vector<string>> p){{f(p)}->same_as<bool>;}
-		ep<void> output_table(ostream &out, T filter = table_t::default_filter);
-		
-
-		//从输入流构造表对象, cat为表flag(返回必正常,无unep)
-		ep<void> make_table(ifstream& ifs, table_category cat = table_category::key_codec);
-
-		//从文件构造表对象, cat为表flag
-		table_t(const string &filename, table_category cat = table_category::key_codec){
-
-			ifstream ifs{filename};
-
-			if (ifs.is_open()){
-				epcall((*this).make_table(ifs,cat), error, is_ok);
-			}else{
-				error =  "[table_t method]Failed to open the file.";
-			}
-		}
-
-		//从ep<ifstream>构造表对象, cat为表flag
-		template<typename EP>
-		requires same_as<remove_cvref_t<EP>, ep<ifstream>>
-		table_t(EP &&ep_ifs, table_category cat = table_category::key_codec){
-			ifstream ifs;
-			epcall(std::move(ep_ifs),ifs,error,is_ok);
-
-			if (is_ok){epcall((*this).make_table(ifs,cat),error,is_ok);}
-		}
-
-
-		//相同的key的list上迭代, 用给range for
-		struct key_list{
-			//iterator.first  string
-			//iterator.second vector<string>
-			pair<iterator,iterator> range;//从equal_range构造
-
-			iterator begin() noexcept{return range.first;}
-			iterator end()   noexcept{return range.second;}
-			const_iterator begin()const noexcept{return range.first;}
-			const_iterator end()  const noexcept{return range.second;}
-		};
-
-		struct key_list_const{
-			//iterator.first  string
-			//iterator.second vector<string>
-			pair<const_iterator,const_iterator> range;//从equal_range构造
-
-			const_iterator begin()const noexcept{return range.first;}
-			const_iterator end()  const noexcept{return range.second;}
-		};
-
-		key_list_const find_list(const string &key) const
-			{return key_list_const{table.equal_range(key)};}
-
-		key_list find_list(const string &key)
-			{return key_list{table.equal_range(key)};}
-
-
-		~table_t() = default;
-		table_t() = default;
-
-		void operator=(table_t &t){
-			(*this).table = t.table;
-			(*this).category = t.category;
-		}
-
-		void operator=(table_t &&t){
-			(*this).table = std::move(t.table);
-			(*this).category = t.category;
-		}
-
-		table_t(table_t &t){
-			(*this).table = t.table;
-			(*this).category = t.category;
-		}
-
-		table_t(table_t &&t){
-			(*this).table = std::move(t.table);
-			(*this).category = t.category;
-		}
-
-
-		iterator begin() noexcept{return table.begin();}
-		iterator end()   noexcept{return table.end();}
-
-		const_iterator begin() const noexcept{return table.begin();}
-		const_iterator end()   const noexcept{return table.end();}
-
-		const_iterator cbegin() const noexcept{return table.cbegin();}
-		const_iterator cend()   const noexcept{return table.cend();}
-
-		pair<iterator,iterator>             equal_range(const string &key)      {return table.equal_range(key);}
-		pair<const_iterator,const_iterator> equal_range(const string &key) const{return table.equal_range(key);}
-
-		iterator find(const string &key){return table.find(key);}
-		const_iterator find(const string &key) const{return table.find(key);}
-
-		iterator erase(iterator i){return table.erase(i);}
-		iterator erase(const_iterator i) {return table.erase(i);}
-
-		size_t size() const {return table.size();};
-	};
-
-	inline ep<void> dir_layout(ostream& output,const string &s_path) {
-		std::filesystem::path path{s_path};
-
-		if(std::filesystem::is_directory(path)){
-
-			for(auto &&entry : directory_iterator(path)){
-				std::string path = entry.path().string();
-
-				if(std::filesystem::is_directory(entry.path())){
-					output << "Dir : " << path << endl;
-					return dir_layout(output, path);
-
-				}else{
-					output << "File: " << path << endl;
-				}
-			}
-
-		}
-
-		return {};
-	}
-
-
-	inline ep<ifstream> detect_file_from_args(const int& argc ,const char * const* const &argv){
-
-		if (argc == 2){
-			ifstream file{argv[1]};
-			
-			if (file.is_open()){
-				return ep<ifstream>{std::move(file)};
-			}else{
-				return unep{"Failed to open the file."};
-			}
-
-		}else{
-			return unep{"Too many or too few arguments."};
-		}
-	}
-	
+	ep<void> table_t::codec_set_difference(const table_t &with){
+		return table::codec_set_difference((*this),with);};
 
 	ep<void> table_t::make_table(ifstream& ifs,const table_category cat){
 		ep<void> e{};
@@ -228,7 +50,7 @@ namespace table{
 		//cat为key_word ,期望键存在字词,对应位置:编码,序号=[字词],频数
 		(*this).category = cat;
 		(*this).is_ok = false;
-		
+
 		string line;
 		string a,b,c,d;
 
@@ -243,7 +65,7 @@ namespace table{
 		bool b_exist;
 		bool c_exist;
 		[[maybe_unused]]bool d_exist;
-		
+
 		while(true){
 
 			if(getline(ifs,line,'\n')){
@@ -254,8 +76,8 @@ namespace table{
 
 				//降噪去空白
 				line.erase(std::remove_if(line.begin(),line.end(),
-						[](char c){return std::isspace(c);})
-					,line.end());
+							[](char c){return std::isspace(c);})
+						,line.end());
 
 				//opt pattern: "编码或字词,"
 				a_endpos = line.find(',',startpos);
@@ -287,7 +109,7 @@ namespace table{
 			//过滤无键名的格式,确保有键名
 			//key_codec下a为key 具体位置: "[编码],序号=字词,频数"
 			//key_word 下c为key 具体位置: "编码,序号=[字词],频数"
-			
+
 			//key_codec
 			if(cat == table_category::key_codec) do{
 				if(a.empty()){
@@ -298,7 +120,7 @@ namespace table{
 				(*this).table.emplace(a,vector<string>{b,c,d});
 
 			}while(false);
-			
+
 			//key_word
 			if(cat == table_category::key_word) do{
 				if(c.empty()){
@@ -311,9 +133,59 @@ namespace table{
 			}while(false);
 
 		}
-		
+
 		(*this).is_ok = true;
 		return e;
+	}
+
+	string_view string_slice(const string_view &s,
+			const size_t startpos,const size_t endpos) noexcept{
+		if (startpos == endpos)return {};
+		if (startpos > endpos) return {};
+
+		//startpos < endpos :
+		if (startpos >= s.size()) return {};
+		if (endpos == string::npos || endpos >= s.size()) return s.substr(startpos);
+		else return s.substr(startpos, endpos - startpos);
+	}
+
+	ep<void> dir_layout(ostream& output,const string &s_path) {
+		std::filesystem::path path{s_path};
+
+		if(std::filesystem::is_directory(path)){
+
+			for(auto &&entry : directory_iterator(path)){
+				std::string path = entry.path().string();
+
+				if(std::filesystem::is_directory(entry.path())){
+					output << "Dir : " << path << endl;
+					return dir_layout(output, path);
+
+				}else{
+					output << "File: " << path << endl;
+				}
+			}
+
+		}
+
+		return {};
+	}
+
+
+	ep<ifstream> detect_file_from_args(const int& argc ,const char * const * const &argv){
+
+		if (argc == 2){
+			ifstream file{argv[1]};
+			
+			if (file.is_open()){
+				return ep<ifstream>{std::move(file)};
+			}else{
+				return unep{"Failed to open the file."};
+			}
+
+		}else{
+			return unep{"Too many or too few arguments."};
+		}
 	}
 
 	ep<void> make_vector_table(ifstream& ifs,
@@ -412,43 +284,7 @@ namespace table{
 		return e;
 	}
 
-	template <typename T>
-	requires requires(T f,pair<string,vector<string>> p){{f(p)}->same_as<bool>;}
-	ep<void> table_t::output_table(ostream &out, T filter){
-
-		if((*this).category == table_category::key_codec){
-			for (auto &&v : (*this).table){
-				if(!filter(v))continue;
-
-				//fmt:字词或编码[键],序号0=编码或字词1,频数2
-				out << format("{},{}={},{}\n",
-					 string_visiable(v.first),
-					 string_visiable(v.second[0]),
-					 string_visiable(v.second[1]),
-					 string_visiable(v.second[2])
-					 );
-
-				out.flush();
-			}}
-
-		if((*this).category == table_category::key_word){
-			for (auto &&v : (*this).table){
-				if(!filter(v))continue;
-
-				out << format("{},{}={},{}\n",
-					 string_visiable(v.second[0]),
-					 string_visiable(v.second[1]),
-					 string_visiable(v.first),
-					 string_visiable(v.second[2])
-					 );
-
-				out.flush();
-			}}
-
-		return {};
-	}
-
-	inline size_t utf8_length(const string &s) noexcept{
+	size_t utf8_length(const string &s) noexcept{
 		size_t count = 0;
 
 		//统计非0b10xxxxxx的字符
@@ -456,7 +292,7 @@ namespace table{
 		return count;
 	}
 
-	inline size_t utf8_word_locate(const string &s,const size_t begin) noexcept{
+	size_t utf8_word_locate(const string &s,const size_t begin) noexcept{
 		//1byte:0xxxxxxxx
 		//2byte:110xxxxx 10xxxxxx
 		//3byte:1110xxxx 10xxxxxx 10xxxxxx
@@ -1335,7 +1171,3 @@ namespace table{
 	}
 
 }
-
-
-
-

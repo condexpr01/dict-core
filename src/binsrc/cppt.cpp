@@ -1,7 +1,7 @@
 //cpp test
 //测试程序
 
-#include "../cppcore/core.impl.cpp"
+#include "core.header.hpp"
 #include <algorithm>
 
 using namespace table;
