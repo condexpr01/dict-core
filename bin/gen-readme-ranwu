@@ -210,6 +210,7 @@ prefix() {
 > 详见下文词库描述
 
 * 燃舞五笔(舞.86wb)    
+> 燃舞五笔的基础: [condexpr01/rime-wubi86ex-powerful](https://github.com/condexpr01/rime-wubi86ex-powerful)    
 > 利用音形作为反查提升五笔的写作，听打，想打能力    
 > 以及五笔不好打的给音形打(可以大大降低候选)    
 > 音形反查是可以顶字上屏的:    
