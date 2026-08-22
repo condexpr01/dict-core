@@ -2,13 +2,14 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-cmd="$1"
 
-ranwu="$2"
-p86wb="$3"
+ranwu="$1"
+p86wb="$2"
+
+cmd="$3"
 
 if [ ! -f "$ranwu" ] && [ ! -f "$p86wb" ];then
-	echo "Usage: $0 <command> <ranwu-rime> <p86wb-rime>"
+	echo "Usage: $0 <ranwu-rime> <p86wb-rime> <behavior>"
 	exit 1
 fi
 
