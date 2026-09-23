@@ -56,6 +56,9 @@ int main(int argc ,char *argv[]) try {
 		for (auto &&inner : i.second){
 			cout << format("{},{}={},{}\n",i.first,inner[0],inner[1],inner[2]);
 		}
+
+		//分隔：方便眼睛看的
+		cout << endl;
 	}
 
 	return 0;
