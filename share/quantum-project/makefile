@@ -3,3 +3,7 @@
 instance:
 	../../bin/fmt-to-rime <(cat ./quantum-rw ./collapsed-rw) > inst-rw
 	../../bin/fmt-to-rime <(cat ./quantum-wb ./collapsed-wb) > inst-wb
+
+clean:
+	-rm inst-rw
+	-rm inst-wb
