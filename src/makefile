@@ -1,3 +1,4 @@
+.PHONY: all run clean
 
 all:
 	cmake -S . -B build -G Ninja
@@ -69,8 +70,5 @@ clean:
 
 	-rm ../src/cppcore/compile_commands.json
 	-rm -rf ../src/cppcore/.cache
-
-
-.PHONY: all run clean
 
 
