@@ -3,10 +3,10 @@
 all: install
 
 compile:
-	cmake -S . -B build
+	cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -G Ninja
 
 build: compile
-	cmake --build build
+	cmake --build build --config Release
 
 install: build
 	cmake --install build

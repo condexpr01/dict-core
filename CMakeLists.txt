@@ -6,7 +6,7 @@ if(OFF)
 endif()
 
 
-cmake_minimum_required(VERSION 3.5..4.4)
+cmake_minimum_required(VERSION 3.5...4.4)
 project(table CXX)
 
 set(CXX_REQUIRED_FEATURE cxx_std_23)
