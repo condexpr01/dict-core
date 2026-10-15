@@ -28,7 +28,11 @@ function(add_bin_tool name src)
 
 	target_link_libraries(${name} PRIVATE core)
 
-	set_target_properties(${name} PROPERTIES INSTALL_RPATH "$ORIGIN:$ORIGIN/lib")
+	set_target_properties(
+		${name}
+		PROPERTIES INSTALL_RPATH "$ORIGIN:$ORIGIN/lib:$ORIGIN/../lib"
+	)
+
 	install(TARGETS ${name} RUNTIME DESTINATION "${CMAKE_SOURCE_DIR}/bin")
 
 endfunction()
@@ -66,8 +70,10 @@ add_bin_tool(sort-codec-seq src/binsrc/sort-codec-seq.cpp)
 add_bin_tool(sort-codec-seq-wbfilter src/binsrc/sort-codec-seq-wbfilter.cpp)
 
 add_bin_tool(make-seq-from-freq src/binsrc/make-seq-from-freq.cpp)
-add_bin_tool(make-seq-from-freq-wbfilter 
-	src/binsrc/make-seq-from-freq-wbfilter.cpp)
+add_bin_tool(
+	make-seq-from-freq-wbfilter 
+	src/binsrc/make-seq-from-freq-wbfilter.cpp
+)
 
 add_bin_tool(fmt-to-scheme src/binsrc/fmt-to-scheme.cpp)
 
