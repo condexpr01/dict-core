@@ -24,10 +24,11 @@ elif [[ "$cmd" == "repo" ]];then
 	"$SCRIPT_DIR"/rime-to-full-fmt "$p86wb" > update-wbfmt 2>>freq-missing
 	"$SCRIPT_DIR"/rime-to-full-fmt "$ranwu" > update-rwfmt 2>>freq-missing
 
-	"$SCRIPT_DIR"/fmt-to-rime update-wbfmt > wb-scheme.txt
-	"$SCRIPT_DIR"/fmt-to-rime update-rwfmt > rw-scheme.txt
-	"$SCRIPT_DIR"/fmt-to-sougou update-wbfmt > wb-sougou.txt
-	"$SCRIPT_DIR"/fmt-to-sougou update-rwfmt > rw-sougou.txt
+	mkdir -p sougou
+	"$SCRIPT_DIR"/fmt-to-rime update-wbfmt > sougou/wb-scheme.txt
+	"$SCRIPT_DIR"/fmt-to-rime update-rwfmt > sougou/rw-scheme.txt
+	"$SCRIPT_DIR"/fmt-to-sougou update-wbfmt > sougou/wb-sougou.txt
+	"$SCRIPT_DIR"/fmt-to-sougou update-rwfmt > sougou/rw-sougou.txt
 
 	"$SCRIPT_DIR"/gen-readme-ranwu update-rwfmt > readme-rw.md
 	"$SCRIPT_DIR"/gen-readme-wubi update-wbfmt > readme-wb.md
