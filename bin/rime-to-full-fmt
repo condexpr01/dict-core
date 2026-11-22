@@ -4,7 +4,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 file=${1}
 
-relative_freq_dir=${2:-"share/freq/freq"}
+relative_freq_dir=${2:-"${SCRIPT_DIR}/../share/freq/freq"}
 
 if ! [ -f "$relative_freq_dir" ]; then
 	echo "freq file not found : ${relative_freq_dir}"

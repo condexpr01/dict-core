@@ -21,17 +21,17 @@ if [[ "$cmd" == "diff" ]];then
 	"$SCRIPT_DIR"/word-set-difference <("$SCRIPT_DIR"/rime-to-fmt "$p86wb") <("$SCRIPT_DIR"/rime-to-fmt "$ranwu")
 
 elif [[ "$cmd" == "repo" ]];then
-	"$SCRIPT_DIR"/rime-to-full-fmt "$p86wb" > update-wbfmt 2>>freq-missing
-	"$SCRIPT_DIR"/rime-to-full-fmt "$ranwu" > update-rwfmt 2>>freq-missing
+	"$SCRIPT_DIR"/rime-to-full-fmt "$p86wb" > "${SCRIPT_DIR}"/../update-wbfmt 2>>"${SCRIPT_DIR}"/../freq-missing
+	"$SCRIPT_DIR"/rime-to-full-fmt "$ranwu" > "${SCRIPT_DIR}"/../update-rwfmt 2>>"${SCRIPT_DIR}"/../freq-missing
 
-	mkdir -p sougou
-	"$SCRIPT_DIR"/fmt-to-rime update-wbfmt > sougou/wb-scheme.txt
-	"$SCRIPT_DIR"/fmt-to-rime update-rwfmt > sougou/rw-scheme.txt
-	"$SCRIPT_DIR"/fmt-to-sougou update-wbfmt > sougou/wb-sougou.txt
-	"$SCRIPT_DIR"/fmt-to-sougou update-rwfmt > sougou/rw-sougou.txt
+	mkdir -p "${SCRIPT_DIR}"/../sougou
+	"$SCRIPT_DIR"/fmt-to-rime "${SCRIPT_DIR}"/../update-wbfmt > "${SCRIPT_DIR}"/../sougou/wb-scheme.txt
+	"$SCRIPT_DIR"/fmt-to-rime "${SCRIPT_DIR}"/../update-rwfmt > "${SCRIPT_DIR}"/../sougou/rw-scheme.txt
+	"$SCRIPT_DIR"/fmt-to-sougou "${SCRIPT_DIR}"/../update-wbfmt > "${SCRIPT_DIR}"/../sougou/wb-sougou.txt
+	"$SCRIPT_DIR"/fmt-to-sougou "${SCRIPT_DIR}"/../update-rwfmt > "${SCRIPT_DIR}"/../sougou/rw-sougou.txt
 
-	"$SCRIPT_DIR"/gen-readme-ranwu update-rwfmt > readme-rw.md
-	"$SCRIPT_DIR"/gen-readme-wubi update-wbfmt > readme-wb.md
+	"$SCRIPT_DIR"/gen-readme-ranwu "${SCRIPT_DIR}"/../update-rwfmt > "${SCRIPT_DIR}"/../readme-rw.md
+	"$SCRIPT_DIR"/gen-readme-wubi "${SCRIPT_DIR}"/../update-wbfmt > "${SCRIPT_DIR}"/../readme-wb.md
 
 fi
 
